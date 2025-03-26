@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "RoutineManager.API.Controllers.TesteController",
+    "Method": "Get",
+    "RelativePath": "api/teste",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
