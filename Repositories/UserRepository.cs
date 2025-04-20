@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace RoutineManager.API.Repositories;
+
+using Microsoft.EntityFrameworkCore;
 using RoutineManager.API.Data;
 using RoutineManager.API.Entities;
 using RoutineManager.API.Repositories.Interfaces;
-
-namespace RoutineManager.API.Repositories;
 
 public class UserRepository : IUserRepository
 {
@@ -14,19 +14,41 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<User?> GetByIdAsync(int id, bool includeHabits = false)
     {
-        return await _context.Users.ToListAsync();
+        if (includeHabits)
+        {
+            return await _context.Users
+                .Include(u => u.Habits)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        return await _context.Users.FindAsync(id);
     }
 
-    public async Task<User> GetByIdAsync(int id)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        return await _context.Users.FindAsync(id);
+        return await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task AddAsync(User user)
     {
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _context.Users.AddAsync(user);
+    }
+
+    public async Task UpdateAsync(User user)
+    {
+        _context.Users.Update(user);
+    }
+
+    public async Task DeleteAsync(User user)
+    {
+        _context.Users.Remove(user);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
     }
 }

@@ -17,23 +17,45 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<UserDto?> GetByIdAsync(int id, bool includeHabits = false)
     {
-        var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<UserDto>>(users);
+        var user = await _userRepository.GetByIdAsync(id, includeHabits);
+        return user is null ? null : _mapper.Map<UserDto>(user);
     }
 
-    public async Task<UserDto> GetUserByIdAsync(int id)
+    public async Task<UserDto?> GetByEmailAsync(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        return user is null ? null : _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<UserDto> CreateAsync(CreateUserDto createDto)
+    {
+        var user = _mapper.Map<User>(createDto);
+
+        await _userRepository.AddAsync(user);
+        await _userRepository.SaveChangesAsync();
+
+        return _mapper.Map<UserDto>(user);
+    }
+
+    public async Task<bool> UpdateAsync(int id, UpdateUserDto updateDto)
     {
         var user = await _userRepository.GetByIdAsync(id);
-        return _mapper.Map<UserDto>(user);
+        if (user is null)
+            return false;
+
+        _mapper.Map(updateDto, user);
+        await _userRepository.UpdateAsync(user);
+        return await _userRepository.SaveChangesAsync();
     }
 
-    public async Task<UserDto> CreateUserAsync(CreateUserDto createUserDto)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var user = _mapper.Map<User>(createUserDto);
-        user.CreatedAt = DateTime.Now;
-        await _userRepository.AddAsync(user);
-        return _mapper.Map<UserDto>(user);
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user is null) return false;
+
+        await _userRepository.DeleteAsync(user);
+        return await _userRepository.SaveChangesAsync();
     }
 }

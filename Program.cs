@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using RoutineManager.API.Data;
 using RoutineManager.API.Repositories.Interfaces;
@@ -22,6 +21,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 // Dependency Injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IHabitRepository, HabitRepository>();
+builder.Services.AddScoped<IHabitService, HabitService>();
 
 var app = builder.Build();
 

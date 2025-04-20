@@ -15,24 +15,49 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id, [FromQuery] bool includeHabits = false)
     {
-        return Ok(await _userService.GetAllUsersAsync());
+        var user = await _userService.GetByIdAsync(id, includeHabits);
+        if (user is null) 
+            return NotFound();
+
+        return Ok(user);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetUserById(int id)
+    [HttpGet("by-email")]
+    public async Task<IActionResult> GetByEmail([FromQuery] string email)
     {
-        var user = await _userService.GetUserByIdAsync(id);
-        if (user == null) return NotFound();
+        var user = await _userService.GetByEmailAsync(email);
+        if (user is null)
+            return NotFound();
+
         return Ok(user);
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto createUserDto)
+    public async Task<IActionResult> Create(CreateUserDto dto)
     {
-        var createdUser = await _userService.CreateUserAsync(createUserDto);
-        return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+        var user = await _userService.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, UpdateUserDto dto)
+    {
+        var success = await _userService.UpdateAsync(id, dto);
+        if (!success) 
+            return NotFound();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var success = await _userService.DeleteAsync(id);
+        if (!success) return NotFound();
+
+        return NoContent();
     }
 }

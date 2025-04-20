@@ -16,6 +16,11 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // Configuração adicional das entidades, constraints, seed data etc.
+        modelBuilder.Entity<User>()
+            .HasMany(h => h.Habits)
+            .WithOne()
+            .HasForeignKey(h => h.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 
