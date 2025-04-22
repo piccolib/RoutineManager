@@ -5,6 +5,8 @@
 bin/
 obj/
 out/
+**/bin/
+**/obj/
 
 ## User-specific files
 *.user
@@ -41,3 +43,16 @@ Thumbs.db
 
 ## Configurações locais
 secrets.json
+
+# Test results
+TestResults/
+
+# Coverage files
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.info
+coverage*
+
+# Others (gerados automaticamente)
+*.AssemblyAttributes.cs

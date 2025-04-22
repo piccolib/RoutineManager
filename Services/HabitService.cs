@@ -18,7 +18,7 @@ public class HabitService(IHabitRepository habitRepository, IMapper mapper) : IH
         return _mapper.Map<IEnumerable<HabitDto>>(habits);
     }
 
-    public async Task<HabitDto> GetHabitByIdAsync(int id)
+    public async Task<HabitDto?> GetHabitByIdAsync(int id)
     {
         var habit = await _habitRepository.GetByIdAsync(id);
         return _mapper.Map<HabitDto>(habit);
