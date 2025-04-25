@@ -37,12 +37,12 @@ public class UserRepository : IUserRepository
         await _context.Users.AddAsync(user);
     }
 
-    public async Task UpdateAsync(User user)
+    public void Update(User user)
     {
         _context.Users.Update(user);
     }
 
-    public async Task DeleteAsync(User user)
+    public void Delete(User user)
     {
         _context.Users.Remove(user);
     }

@@ -8,7 +8,7 @@ public interface IHabitRepository
     Task<IEnumerable<Habit>> GetByUserIdAsync(int userId);
     Task<Habit?> GetByIdAsync(int id);
     Task AddAsync(Habit habit);
-    Task UpdateAsync(Habit habit);
-    Task DeleteAsync(Habit habit);
+    void Update(Habit habit);
+    void Delete(Habit habit);
     Task<bool> SaveChangesAsync();
 }

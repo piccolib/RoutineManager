@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using RoutineManager.API.DTOs;
 using RoutineManager.API.Entities;
-using RoutineManager.API.Repositories;
 using RoutineManager.API.Repositories.Interfaces;
 using RoutineManager.API.Services.Interfaces;
 
@@ -41,7 +40,7 @@ public class HabitService(IHabitRepository habitRepository, IMapper mapper) : IH
             return false;
 
         _mapper.Map(updateHabitDto, habit);
-        await _habitRepository.UpdateAsync(habit);
+        habitRepository.Update(habit);
         return await _habitRepository.SaveChangesAsync();
     }
 
@@ -50,7 +49,7 @@ public class HabitService(IHabitRepository habitRepository, IMapper mapper) : IH
         var user = await _habitRepository.GetByIdAsync(id);
         if (user is null) return false;
 
-        await _habitRepository.DeleteAsync(user);
+        _habitRepository.Delete(user);
         return await _habitRepository.SaveChangesAsync();
     }
 }

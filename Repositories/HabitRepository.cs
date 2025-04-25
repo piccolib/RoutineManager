@@ -28,15 +28,15 @@ public class HabitRepository : IHabitRepository
 
     public async Task AddAsync(Habit habit)
     {
-        _context.Habits.Add(habit);
+        await _context.Habits.AddAsync(habit);
     }
 
-    public async Task UpdateAsync(Habit habit)
+    public void Update(Habit habit)
     {
         _context.Habits.Update(habit);
     }
 
-    public async Task DeleteAsync(Habit habit)
+    public void Delete(Habit habit)
     {
         _context.Habits.Remove(habit);
     }

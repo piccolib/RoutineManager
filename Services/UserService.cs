@@ -46,7 +46,7 @@ public class UserService : IUserService
             return false;
 
         _mapper.Map(updateDto, user);
-        await _userRepository.UpdateAsync(user);
+        _userRepository.Update(user);
         return await _userRepository.SaveChangesAsync();
     }
 
@@ -55,7 +55,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetByIdAsync(id);
         if (user is null) return false;
 
-        await _userRepository.DeleteAsync(user);
+        _userRepository.Delete(user);
         return await _userRepository.SaveChangesAsync();
     }
 }
