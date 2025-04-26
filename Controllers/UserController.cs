@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RoutineManager.API.DTOs;
 using RoutineManager.API.Services.Interfaces;
 
@@ -6,6 +7,7 @@ namespace RoutineManager.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -33,13 +35,6 @@ public class UserController : ControllerBase
             return NotFound();
 
         return Ok(user);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateUserDto dto)
-    {
-        var user = await _userService.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
     [HttpPut("{id}")]

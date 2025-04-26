@@ -29,16 +29,6 @@ public class UserService : IUserService
         return user is null ? null : _mapper.Map<UserDto>(user);
     }
 
-    public async Task<UserDto> CreateAsync(CreateUserDto createDto)
-    {
-        var user = _mapper.Map<User>(createDto);
-
-        await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
-
-        return _mapper.Map<UserDto>(user);
-    }
-
     public async Task<bool> UpdateAsync(int id, UpdateUserDto updateDto)
     {
         var user = await _userRepository.GetByIdAsync(id);

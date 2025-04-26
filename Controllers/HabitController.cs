@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RoutineManager.API.DTOs;
 using RoutineManager.API.Services;
 using RoutineManager.API.Services.Interfaces;
@@ -7,6 +8,7 @@ namespace RoutineManager.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class HabitController : ControllerBase
 {
     private readonly IHabitService _habitService;
